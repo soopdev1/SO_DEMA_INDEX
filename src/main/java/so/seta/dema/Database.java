@@ -3,7 +3,6 @@ package so.seta.dema;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -59,7 +58,7 @@ public class Database {
     }
 
     public String getPath(String id) {
-        try (Statement stmt = this.conn.createStatement(); ResultSet rs = stmt.executeQuery("Select url From path where id='"
+        try (Statement stmt = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE); ResultSet rs = stmt.executeQuery("Select url From path where id='"
                 + id + "'")) {
             if (rs.next()) {
                 return rs.getString("url");
@@ -71,7 +70,7 @@ public class Database {
     }
 
     public boolean isIndicizzata(String endorse, String tipoDoc) {
-        try (Statement stmt = this.conn.createStatement(); ResultSet rs = stmt
+        try (Statement stmt = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE); ResultSet rs = stmt
                 .executeQuery("SELECT * FROM `findomestic`.`indicizzate` where endorse='"
                         + endorse + "' and tipoDoc='" + tipoDoc + "'")) {
             if (rs.next()) {
@@ -85,7 +84,7 @@ public class Database {
 
     public ResultSet getPratiche0() {
         try {
-            return this.conn.createStatement().executeQuery("Select * From coda order by data asc");
+            return this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery("Select * From coda order by data asc");
         } catch (Exception ex) {
             logger.severe(estraiEccezione(ex));
         }
@@ -94,7 +93,7 @@ public class Database {
 
     public ResultSet getPratiche1() {
         try {
-            return this.conn.createStatement().executeQuery("Select * From coda where RIGHT(endorse,1)%3=1 order by data asc limit 100");
+            return this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery("Select * From coda where RIGHT(endorse,1)%3=1 order by data asc limit 100");
         } catch (Exception ex) {
             logger.severe(estraiEccezione(ex));
         }
@@ -103,7 +102,7 @@ public class Database {
 
     public ResultSet getPratiche2() {
         try {
-            return this.conn.createStatement().executeQuery("Select * From coda where RIGHT(endorse,1)%3=2 order by data asc limit 100");
+            return this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery("Select * From coda where RIGHT(endorse,1)%3=2 order by data asc limit 100");
         } catch (Exception ex) {
             logger.severe(estraiEccezione(ex));
         }
@@ -111,7 +110,7 @@ public class Database {
     }
 
     public int numeroPratiche(String operatore) {
-        try (Statement stmt = this.conn.createStatement(); ResultSet rs = stmt
+        try (Statement stmt = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE); ResultSet rs = stmt
                 .executeQuery("Select count(*) From coda where utente='"
                         + operatore + "'")) {
             if (rs.next()) {
@@ -124,7 +123,7 @@ public class Database {
     }
 
     public int eliminaPratica(String endorse, String tipoDoc) {
-        try (Statement stmt = this.conn.createStatement()) {
+        try (Statement stmt = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
             return stmt.executeUpdate("delete From coda where endorse='" + endorse + "' and tipoDoc='" + tipoDoc + "'");
         } catch (Exception ex) {
             logger.severe(estraiEccezione(ex));
@@ -134,7 +133,7 @@ public class Database {
 
     public boolean insertIndicizzata(String lotto, String endorse, String codPrt, String codAut, String tipoDoc, String tipoLav, String originale, String codBusta, String corriere, String dataCorriere, String oraCorriere, String dataBusta, String oraBusta, String dataLav, String oraLav, String dataOCR, String oraOCR, String dataOCRManuale, String oraOCRManuale, String pagine, String nomeFile, String scatola, String utente, String dalm, String tvei, String nome, String cognome, String cap, String csz, String cod9899, String dataScansione, String oraScansione, String dataInizioLavorazione, String oraInizioLavorazione, String dataFineLavorazione, String oraFineLavorazione, String indici, String pompator) {
         try {
-            try (Statement stmt = this.conn.createStatement()) {
+            try (Statement stmt = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
                 stmt.executeUpdate("start transaction");
                 
                 ResultSet rs = stmt.executeQuery("Select * From pratica Where endorse ='"

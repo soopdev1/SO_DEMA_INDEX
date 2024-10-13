@@ -76,19 +76,19 @@ public class Engine {
     }
 
     public Engine() {
-        
+
     }
 
     public void run() {
-        
+
         this.db = new Database();
         this.dirIn = this.db.getPath("PathArchivio");
         this.dirOut = this.db.getPath("PathOut");
-        
+
         try {
-            
+
             ResultSet rs = this.db.getPratiche0();
-            
+
             while (rs.next()) {
                 this.lotto = rs.getString("lotto");
                 this.endorse = rs.getString("endorse");
@@ -151,8 +151,8 @@ public class Engine {
                         pathOut + this.endorse + this.tipoDoc + ".pdf", this.indici);
                 if (responsePDF) {
                     if ((this.db.insertIndicizzata(this.lotto, this.endorse, this.codPrt, this.codAut, this.tipoDoc, this.tipoLav, this.originale, this.codBusta, this.corriere, this.dataCorriere, this.oraCorriere, this.dataBusta, this.oraBusta, this.dataLav, this.oraLav, this.dataOCR, this.oraOCR, this.dataOCRManuale, this.oraOCRManuale, this.totPag, this.pathFilePdf, this.scatola, this.utente, this.dalm, this.tvei, this.nome, this.cognome, this.cap, this.csz, this.cod9899, this.dataScansione, this.oraScansione, this.dataInizioLavorazione, this.oraInizioLavorazione, this.dataFineLavorazione, this.oraFineLavorazione, this.indici, this.pompator)) || (this.db.isIndicizzata(this.endorse, this.tipoDoc))) {
-                        FindomesticFactWebService_Service serv = new FindomesticFactWebService_Service();
-                        FindomesticFactWebService ffws = serv.getFindomesticFactWebServicePort();
+                        FactWS serv = new FactWS();
+                        SOFACTWS ffws = serv.getSOFACTWSPort();
                         Pratica pratica = new Pratica();
                         pratica.setIddocumento(this.endorse + this.tipoDoc);
                         pratica.setEndorse(this.endorse);

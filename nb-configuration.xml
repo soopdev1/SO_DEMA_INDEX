@@ -15,5 +15,6 @@ Any value defined here will override the pom.xml file value but is only applicab
 -->
         <org-netbeans-modules-maven-jaxws._5f_C_5f_FindomesticFactWebService>http://10.72.107.100:8080/FindomesticFactWebService/FindomesticFactWebService?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_FindomesticFactWebService>
         <netbeans.hint.jdkPlatform>JDK_1.8</netbeans.hint.jdkPlatform>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_FactWS>http://10.72.107.70:8080/FACTWS/FactWS?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_FactWS>
     </properties>
 </project-shared-configuration>

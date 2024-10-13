@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.2 git-revision#0264419. --><xs:schema xmlns:tns="http://ws.so.rc/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.so.rc/">
+
+<xs:complexType name="accettazione">
+<xs:sequence>
+<xs:element name="colli_cosegnati" type="xs:string" minOccurs="0"/>
+<xs:element name="colli_previsti" type="xs:string" minOccurs="0"/>
+<xs:element name="corriere" type="xs:string" minOccurs="0"/>
+<xs:element name="data" type="xs:string" minOccurs="0"/>
+<xs:element name="distributore" type="xs:string" minOccurs="0"/>
+<xs:element name="icr" type="xs:string" minOccurs="0"/>
+<xs:element name="lavorazione" type="xs:string" minOccurs="0"/>
+<xs:element name="ldv" type="xs:string" minOccurs="0"/>
+<xs:element name="numero_pratiche" type="xs:string" minOccurs="0"/>
+<xs:element name="ora" type="xs:string" minOccurs="0"/>
+<xs:element name="provincia" type="xs:string" minOccurs="0"/>
+<xs:element name="sito" type="xs:string" minOccurs="0"/>
+<xs:element name="stato_consegna" type="xs:string" minOccurs="0"/>
+<xs:element name="tvei" type="xs:string" minOccurs="0"/>
+<xs:element name="utente" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="arrayList">
+<xs:complexContent>
+<xs:extension base="tns:abstractList">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="abstractList" abstract="true">
+<xs:complexContent>
+<xs:extension base="tns:abstractCollection">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="abstractCollection" abstract="true">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="pratica">
+<xs:sequence>
+<xs:element name="barcode" type="xs:string" minOccurs="0"/>
+<xs:element name="cap" type="xs:string" minOccurs="0"/>
+<xs:element name="cod9899" type="xs:string" minOccurs="0"/>
+<xs:element name="codAut" type="xs:string" minOccurs="0"/>
+<xs:element name="codBusta" type="xs:string" minOccurs="0"/>
+<xs:element name="codPrt" type="xs:string" minOccurs="0"/>
+<xs:element name="cognome" type="xs:string" minOccurs="0"/>
+<xs:element name="corriere" type="xs:string" minOccurs="0"/>
+<xs:element name="csz" type="xs:string" minOccurs="0"/>
+<xs:element name="dalm" type="xs:string" minOccurs="0"/>
+<xs:element name="dataBusta" type="xs:string" minOccurs="0"/>
+<xs:element name="dataCorriere" type="xs:string" minOccurs="0"/>
+<xs:element name="dataFineLavorazione" type="xs:string" minOccurs="0"/>
+<xs:element name="dataInizioLavorazione" type="xs:string" minOccurs="0"/>
+<xs:element name="dataLav" type="xs:string" minOccurs="0"/>
+<xs:element name="dataOCR" type="xs:string" minOccurs="0"/>
+<xs:element name="dataOCRManuale" type="xs:string" minOccurs="0"/>
+<xs:element name="dataScansione" type="xs:string" minOccurs="0"/>
+<xs:element name="endorse" type="xs:string" minOccurs="0"/>
+<xs:element name="esitoconformita" type="xs:string" minOccurs="0"/>
+<xs:element name="iddocumento" type="xs:string" minOccurs="0"/>
+<xs:element name="lavorazione" type="xs:string" minOccurs="0"/>
+<xs:element name="lotto" type="xs:string" minOccurs="0"/>
+<xs:element name="nome" type="xs:string" minOccurs="0"/>
+<xs:element name="nomeFile" type="xs:string" minOccurs="0"/>
+<xs:element name="oraBusta" type="xs:string" minOccurs="0"/>
+<xs:element name="oraCorriere" type="xs:string" minOccurs="0"/>
+<xs:element name="oraFineLavorazione" type="xs:string" minOccurs="0"/>
+<xs:element name="oraInizioLavorazione" type="xs:string" minOccurs="0"/>
+<xs:element name="oraLav" type="xs:string" minOccurs="0"/>
+<xs:element name="oraOCR" type="xs:string" minOccurs="0"/>
+<xs:element name="oraOCRManuale" type="xs:string" minOccurs="0"/>
+<xs:element name="oraScansione" type="xs:string" minOccurs="0"/>
+<xs:element name="originale" type="xs:string" minOccurs="0"/>
+<xs:element name="pagine" type="xs:string" minOccurs="0"/>
+<xs:element name="scatola" type="xs:string" minOccurs="0"/>
+<xs:element name="tipoDoc" type="xs:string" minOccurs="0"/>
+<xs:element name="tipoLav" type="xs:string" minOccurs="0"/>
+<xs:element name="tvei" type="xs:string" minOccurs="0"/>
+<xs:element name="utente" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

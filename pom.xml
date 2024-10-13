@@ -21,6 +21,31 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>
+                                        so.seta.dema.Engine
+                                    </mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <version>2.3</version>
@@ -31,16 +56,16 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>10.72.107.100_8080/FindomesticFactWebService/FindomesticFactWebService.wsdl</wsdlFile>
+                                <wsdlFile>10.72.107.70_8080/FACTWS/FactWS.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName>so.seta.dema</packageName>
                             <vmArgs>
                                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
                             </vmArgs>
-                            <wsdlLocation>http://10.72.107.100:8080/FindomesticFactWebService/FindomesticFactWebService?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/FindomesticFactWebService.stale</staleFile>
+                            <wsdlLocation>http://10.72.107.70:8080/FACTWS/FactWS?wsdl</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/FactWS.stale</staleFile>
                         </configuration>
-                        <id>wsimport-generate-FindomesticFactWebService</id>
+                        <id>wsimport-generate-FactWS</id>
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>
@@ -83,7 +108,7 @@
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
-            <version>5.5.13.3</version>
+            <version>5.5.13.4</version>
             <type>jar</type>
         </dependency>
     </dependencies>
@@ -91,6 +116,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <exec.mainClass>so.seta.so_dema_index.SO_DEMA_INDEX</exec.mainClass>
+        <exec.mainClass>so.seta.dema.Engine</exec.mainClass>
     </properties>
 </project>
