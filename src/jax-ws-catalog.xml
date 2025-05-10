@@ -2,6 +2,7 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://10.72.107.100:8080/FindomesticFactWebService/FindomesticFactWebService?wsdl" uri="wsdl/10.72.107.100_8080/FindomesticFactWebService/FindomesticFactWebService.wsdl"/>
     <system systemId="http://10.72.107.100:8080/FindomesticFactWebService/FindomesticFactWebService?xsd=1" uri="wsdl/10.72.107.100_8080/FindomesticFactWebService/FindomesticFactWebService.xsd_1.xsd"/>
+    <system systemId="http://10.72.107.70:8080/FACTWS/FactWS" uri="wsdl/10.72.107.70_8080/FACTWS/factws.xml"/>
     <system systemId="http://10.72.107.70:8080/FACTWS/FactWS?wsdl" uri="wsdl/10.72.107.70_8080/FACTWS/FactWS.wsdl"/>
     <system systemId="http://10.72.107.70:8080/FACTWS/FactWS?xsd=1" uri="wsdl/10.72.107.70_8080/FACTWS/FactWS.xsd_1.xsd"/>
 </catalog>

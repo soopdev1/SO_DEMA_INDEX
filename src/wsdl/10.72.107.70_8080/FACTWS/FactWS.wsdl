@@ -4,26 +4,23 @@
 <xsd:import namespace="http://ws.so.rc/" schemaLocation="http://10.72.107.70:8080/FACTWS/FactWS?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="getEccessiDaPubblicare"/>
+<message name="getEccessiDaPubblicareResponse">
+<part name="return" type="tns:arrayList"/>
+</message>
+<message name="inserisciPratica">
+<part name="pratica" type="tns:pratica"/>
+<part name="fileBase64" type="xsd:string"/>
+<part name="cartella" type="xsd:string"/>
+<part name="nomeFile" type="xsd:string"/>
+</message>
+<message name="inserisciPraticaResponse">
+<part name="return" type="xsd:string"/>
+</message>
 <message name="inserisciAccettazione">
 <part name="accettazione" type="tns:accettazione"/>
 </message>
 <message name="inserisciAccettazioneResponse">
-<part name="return" type="xsd:string"/>
-</message>
-<message name="gestioneEccessi">
-<part name="gestioneEccessi" type="tns:arrayList"/>
-</message>
-<message name="gestioneEccessiResponse">
-<part name="return" type="xsd:string"/>
-</message>
-<message name="deleteEccesso">
-<part name="deleteEccesso" type="xsd:string"/>
-</message>
-<message name="deleteEccessoResponse">
-<part name="return" type="xsd:string"/>
-</message>
-<message name="testService"/>
-<message name="testServiceResponse">
 <part name="return" type="xsd:string"/>
 </message>
 <message name="getErroriWebServices">
@@ -32,23 +29,34 @@
 <message name="getErroriWebServicesResponse">
 <part name="return" type="xsd:string"/>
 </message>
-<message name="inserisciPratica">
-<part name="pratica" type="tns:pratica"/>
-<part name="arg1" type="xsd:string"/>
-<part name="arg2" type="xsd:string"/>
-<part name="arg3" type="xsd:string"/>
+<message name="gestioneEccessi">
+<part name="listaeccessi" type="tns:arrayList"/>
 </message>
-<message name="inserisciPraticaResponse">
+<message name="gestioneEccessiResponse">
 <part name="return" type="xsd:string"/>
 </message>
-<message name="getEccessiDaPubblicare"/>
-<message name="getEccessiDaPubblicareResponse">
-<part name="return" type="tns:arrayList"/>
+<message name="deleteEccesso">
+<part name="eccesso" type="xsd:string"/>
+</message>
+<message name="deleteEccessoResponse">
+<part name="return" type="xsd:string"/>
 </message>
 <portType name="SO_FACT_WS">
+<operation name="getEccessiDaPubblicare">
+<input wsam:Action="http://ws.so.rc/SO_FACT_WS/getEccessiDaPubblicareRequest" message="tns:getEccessiDaPubblicare"/>
+<output wsam:Action="http://ws.so.rc/SO_FACT_WS/getEccessiDaPubblicareResponse" message="tns:getEccessiDaPubblicareResponse"/>
+</operation>
+<operation name="inserisciPratica" parameterOrder="pratica fileBase64 cartella nomeFile">
+<input wsam:Action="http://ws.so.rc/SO_FACT_WS/inserisciPraticaRequest" message="tns:inserisciPratica"/>
+<output wsam:Action="http://ws.so.rc/SO_FACT_WS/inserisciPraticaResponse" message="tns:inserisciPraticaResponse"/>
+</operation>
 <operation name="inserisciAccettazione">
 <input wsam:Action="http://ws.so.rc/SO_FACT_WS/inserisciAccettazioneRequest" message="tns:inserisciAccettazione"/>
 <output wsam:Action="http://ws.so.rc/SO_FACT_WS/inserisciAccettazioneResponse" message="tns:inserisciAccettazioneResponse"/>
+</operation>
+<operation name="getErroriWebServices">
+<input wsam:Action="http://ws.so.rc/SO_FACT_WS/getErroriWebServicesRequest" message="tns:getErroriWebServices"/>
+<output wsam:Action="http://ws.so.rc/SO_FACT_WS/getErroriWebServicesResponse" message="tns:getErroriWebServicesResponse"/>
 </operation>
 <operation name="gestioneEccessi">
 <input wsam:Action="http://ws.so.rc/SO_FACT_WS/gestioneEccessiRequest" message="tns:gestioneEccessi"/>
@@ -58,62 +66,10 @@
 <input wsam:Action="http://ws.so.rc/SO_FACT_WS/deleteEccessoRequest" message="tns:deleteEccesso"/>
 <output wsam:Action="http://ws.so.rc/SO_FACT_WS/deleteEccessoResponse" message="tns:deleteEccessoResponse"/>
 </operation>
-<operation name="testService">
-<input wsam:Action="http://ws.so.rc/SO_FACT_WS/testServiceRequest" message="tns:testService"/>
-<output wsam:Action="http://ws.so.rc/SO_FACT_WS/testServiceResponse" message="tns:testServiceResponse"/>
-</operation>
-<operation name="getErroriWebServices">
-<input wsam:Action="http://ws.so.rc/SO_FACT_WS/getErroriWebServicesRequest" message="tns:getErroriWebServices"/>
-<output wsam:Action="http://ws.so.rc/SO_FACT_WS/getErroriWebServicesResponse" message="tns:getErroriWebServicesResponse"/>
-</operation>
-<operation name="inserisciPratica" parameterOrder="pratica arg1 arg2 arg3">
-<input wsam:Action="http://ws.so.rc/SO_FACT_WS/inserisciPraticaRequest" message="tns:inserisciPratica"/>
-<output wsam:Action="http://ws.so.rc/SO_FACT_WS/inserisciPraticaResponse" message="tns:inserisciPraticaResponse"/>
-</operation>
-<operation name="getEccessiDaPubblicare">
-<input wsam:Action="http://ws.so.rc/SO_FACT_WS/getEccessiDaPubblicareRequest" message="tns:getEccessiDaPubblicare"/>
-<output wsam:Action="http://ws.so.rc/SO_FACT_WS/getEccessiDaPubblicareResponse" message="tns:getEccessiDaPubblicareResponse"/>
-</operation>
 </portType>
 <binding name="SO_FACT_WSPortBinding" type="tns:SO_FACT_WS">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"/>
-<operation name="inserisciAccettazione">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal" namespace="http://ws.so.rc/"/>
-</input>
-<output>
-<soap:body use="literal" namespace="http://ws.so.rc/"/>
-</output>
-</operation>
-<operation name="gestioneEccessi">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal" namespace="http://ws.so.rc/"/>
-</input>
-<output>
-<soap:body use="literal" namespace="http://ws.so.rc/"/>
-</output>
-</operation>
-<operation name="deleteEccesso">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal" namespace="http://ws.so.rc/"/>
-</input>
-<output>
-<soap:body use="literal" namespace="http://ws.so.rc/"/>
-</output>
-</operation>
-<operation name="testService">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal" namespace="http://ws.so.rc/"/>
-</input>
-<output>
-<soap:body use="literal" namespace="http://ws.so.rc/"/>
-</output>
-</operation>
-<operation name="getErroriWebServices">
+<operation name="getEccessiDaPubblicare">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal" namespace="http://ws.so.rc/"/>
@@ -131,7 +87,34 @@
 <soap:body use="literal" namespace="http://ws.so.rc/"/>
 </output>
 </operation>
-<operation name="getEccessiDaPubblicare">
+<operation name="inserisciAccettazione">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal" namespace="http://ws.so.rc/"/>
+</input>
+<output>
+<soap:body use="literal" namespace="http://ws.so.rc/"/>
+</output>
+</operation>
+<operation name="getErroriWebServices">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal" namespace="http://ws.so.rc/"/>
+</input>
+<output>
+<soap:body use="literal" namespace="http://ws.so.rc/"/>
+</output>
+</operation>
+<operation name="gestioneEccessi">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal" namespace="http://ws.so.rc/"/>
+</input>
+<output>
+<soap:body use="literal" namespace="http://ws.so.rc/"/>
+</output>
+</operation>
+<operation name="deleteEccesso">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal" namespace="http://ws.so.rc/"/>

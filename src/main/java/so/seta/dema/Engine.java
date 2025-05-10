@@ -197,10 +197,16 @@ public class Engine {
 
                         String base64 = encodeFileToBase64(new File(pathOut + this.endorse + this.tipoDoc + ".pdf"));
                         if (base64 != null) {
-                            logger.warning(ffws.getErroriWebServices(ffws.inserisciPratica(pratica, base64,
-                                    cartella, this.endorse + this.tipoDoc + ".pdf")));
 
-                            this.db.eliminaPratica(this.endorse, this.tipoDoc);
+                            String esitoWeNewFact = ffws.inserisciPratica(pratica, base64,
+                                    cartella, this.endorse + this.tipoDoc + ".pdf");
+//                        if (responseDB == 0 || responseDB == -1 || responseDB == -3000001) {
+                            if (esitoWeNewFact.equals("00")) {
+                                this.db.eliminaPratica(this.endorse, this.tipoDoc);
+                            }
+                            
+                            logger.warning(ffws.getErroriWebServices(esitoWeNewFact));
+
                         }
                     }
                 }

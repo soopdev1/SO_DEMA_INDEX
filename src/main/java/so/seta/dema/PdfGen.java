@@ -1,18 +1,29 @@
 package so.seta.dema;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.RandomAccessFileOrArray;
-import com.itextpdf.text.pdf.codec.TiffImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import org.apache.commons.lang3.RandomStringUtils;
-import static so.seta.dema.Engine.estraiEccezione;
-import static so.seta.dema.Engine.logger;
+import org.apache.pdfbox.cos.COSArray;
+import org.apache.pdfbox.cos.COSString;
+import org.apache.pdfbox.pdfparser.PDFStreamParser;
+import org.apache.pdfbox.pdfwriter.ContentStreamWriter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDStream;
+import org.faceless.pdf2.PDF;
+import org.faceless.pdf2.PDFImage;
+import org.faceless.pdf2.PDFImageSet;
+import org.faceless.pdf2.PDFPage;
+
 
 public class PdfGen {
 
@@ -40,55 +51,105 @@ public class PdfGen {
         return in;
     }
 
-    public static boolean convertTifToPDF(String fileIn, String fileOut) {
+    public static boolean writePdf(String pathin, String pathout, String indici) {
         try {
-            RandomAccessFileOrArray myTiffFile = new RandomAccessFileOrArray(fileIn);
-            int numberOfPages = TiffImage.getNumberOfPages(myTiffFile);
-            Document TifftoPDF = new Document();
-            PdfWriter pdfWriter = PdfWriter.getInstance(TifftoPDF, new FileOutputStream(fileOut));
-            pdfWriter.setStrictImageSequence(true);
-            TifftoPDF.open();
-            for (int i = 1; i <= numberOfPages; i++) {
-                Image tempImage = TiffImage.getTiffImage(myTiffFile, i);
-                Rectangle pageSize = new Rectangle(tempImage.getWidth(), tempImage.getHeight());
-                TifftoPDF.setPageSize(pageSize);
-                TifftoPDF.newPage();
-                TifftoPDF.add((Element) tempImage);
-            }
-            TifftoPDF.close();
-            return true;
-        } catch (Exception ex) {
-            logger.severe(estraiEccezione(ex));
-            return false;
-        }
-    }
-
-    public static boolean writePdf(String fileIn, String fileOut, String indici) {
-        try {
-            if (indici.trim().equals("0")) {
-                return convertTifToPDF(fileIn, fileOut);
-            }
-            String[] pages = indici.split(";");
-            if (pages.length > 0) {
-                RandomAccessFileOrArray myTiffFile = new RandomAccessFileOrArray(fileIn);
-                Document TifftoPDF = new Document();
-                PdfWriter pdfWriter = PdfWriter.getInstance(TifftoPDF, new FileOutputStream(fileOut));
-                pdfWriter.setStrictImageSequence(true);
-                TifftoPDF.open();
-                for (String page : pages) {
-                    Image tempImage = TiffImage.getTiffImage(myTiffFile, Integer.parseInt(page) + 1);
-                    Rectangle pageSize = new Rectangle(tempImage.getWidth(), tempImage.getHeight());
-                    TifftoPDF.setPageSize(pageSize);
-                    TifftoPDF.newPage();
-                    TifftoPDF.add((Element) tempImage);
+            indici = indici.trim();
+            PDF pdf = new PDF();
+            File tif = new File(pathin);
+            File pdf1 = new File(generaId() + ".pdf");
+            File pdf2 = new File(generaId() + "2.pdf");
+            try (InputStream in = new FileInputStream(tif)) {
+                PDFImageSet imgs = new PDFImageSet(in);
+                if (indici.equals("")) {
+                    for (int j = 0; j < imgs.getNumImages(); j++) {
+                        PDFImage img = imgs.getImage(j);
+                        float w = img.getWidth();
+                        float h = img.getHeight();
+                        PDFPage page = pdf.newPage((int) w, (int) h);
+                        page.drawImage(img, 0, 0, w, h);
+                    }
+                } else {
+                    StringTokenizer st = new StringTokenizer(indici, ";");
+                    if (st.hasMoreTokens()) {
+                        while (st.hasMoreTokens()) {
+                            PDFImage img = imgs.getImage(Integer.parseInt(st.nextToken()));
+                            float w = img.getWidth();
+                            float h = img.getHeight();
+                            PDFPage page = pdf.newPage((int) w, (int) h);
+                            page.drawImage(img, 0, 0, w, h);
+                        }
+                    } else {
+                        PDFImage img = imgs.getImage(Integer.parseInt(indici));
+                        float w = img.getWidth();
+                        float h = img.getHeight();
+                        PDFPage page = pdf.newPage((int) w, (int) h);
+                        page.drawImage(img, 0, 0, w, h);
+                    }
                 }
-                TifftoPDF.close();
+            }
+            try (OutputStream fo = new FileOutputStream(pdf1)) {
+                pdf.render(fo);
+            }
+            try (PDDocument doc = PDDocument.load(pdf1)) {
+                List pages = doc.getDocumentCatalog().getAllPages();
+                for (int i = 0; i < pages.size(); i++) {
+                    PDPage page1 = (PDPage) pages.get(i);
+                    PDFStreamParser parser = new PDFStreamParser(
+                            page1.getContents());
+                    parser.parse();
+                    List tokens = parser.getTokens();
+                    int indexremove = 99999999;
+                    boolean found = false;
+                    for (int j = 0; j < tokens.size() & !found; j++) {
+                        Object token = tokens.get(j);
+                        if (token instanceof COSArray) {
+                            COSArray cos = (COSArray) token;
+                            COSString st = (COSString) cos.get(0);
+                            String s = st.getString();
+                            if (s.equalsIgnoreCase("DEMO")) {
+                                indexremove = j;
+                                found = true;
+                            }
+                        }
+                    }
+                    PDStream newContents = new PDStream(doc);
+                    ContentStreamWriter writer = new ContentStreamWriter(
+                            newContents.createOutputStream());
+                    if (indexremove != 99999999) {
+                        tokens.remove(indexremove);
+                    }
+                    writer.writeTokens(tokens);
+                    newContents.addCompression();
+                    page1.setContents(newContents);
+                }
+                doc.save(pdf2);
+            }
+            pdf1.delete();
+
+            File pdfOut = new File(pathout);
+            if (copy(pdf2, pdfOut)) {
+                pdf2.delete();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    private static boolean copy(File srcFile, File destFile) {
+        try (InputStream oInStream = new FileInputStream(srcFile); OutputStream oOutStream = new FileOutputStream(destFile)) {
+            byte[] oBytes = new byte[2048];
+            int nLength;
+            BufferedInputStream oBuffInputStream = new BufferedInputStream(oInStream);
+            while ((nLength = oBuffInputStream.read(oBytes)) > 0) {
+                oOutStream.write(oBytes, 0, nLength);
             }
             return true;
         } catch (Exception ex) {
-            logger.severe(estraiEccezione(ex));
             return false;
         }
     }
+    
 
 }
